@@ -5,6 +5,7 @@ import com.tutorial.elasticsearch.search.model.Author;
 import com.tutorial.elasticsearch.search.repository.ArticleRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class SearchTest {
+    private final PageRequest pageable = PageRequest.of(0, 10);
     @Autowired ArticleRepository articleRepository;
 
     String[] title = null;
@@ -33,7 +35,13 @@ class SearchTest {
         title = DataCreator.generateTitles();
         List<Article> list = new ArrayList<>();
         for (int i = 0; i < title.length; i++) {
-            list.add(new Article("" + i, title[i], generateRandomAuthorList()));
+            Article article = new Article(
+                    "" + i, title[i],
+                    generateRandomAuthorList(),
+                    DataCreator.generateRandomTags()
+            );
+            System.out.println(article);
+            list.add(article);
         }
 
         articleRepository.saveAll(list);
@@ -55,12 +63,40 @@ class SearchTest {
     }
 
     @Test
+    @DisplayName("저자가 포함되는지")
     void test1() {
-        PageRequest pageable = PageRequest.of(0, 10);
+        String firstName = firstNames[0];
         List<Article> byAuthorsName = articleRepository
-                .findByAuthorsNameUsingCustomQuery(firstNames[0], pageable).getContent();
-        
+                .findByAuthorsNameUsingCustomQuery(firstName, pageable).getContent();
+
         for (Article article : byAuthorsName) {
+            System.out.println(article);
+        }
+    }
+
+    @Test
+    @DisplayName("모든 문서 중 태그가 포함되는지")
+    void test2() {
+        String tag = DataCreator.getRandomTag();
+        System.out.println(tag);
+
+        List<Article> content = articleRepository
+                .findByFilteredTagQuery(tag, pageable).getContent();
+        for (Article article : content) {
+            System.out.println(article);
+        }
+    }
+
+    @Test
+    @DisplayName("모든 문서 중 태그가 포함되는지")
+    void test3() {
+        String firstName = firstNames[0];
+        String tag = DataCreator.getRandomTag();
+        System.out.println(tag + " : " + firstName);
+
+        List<Article> content = articleRepository
+                .findByAuthorsNameAndFilteredTagQuery(firstName, tag, pageable).getContent();
+        for (Article article : content) {
             System.out.println(article);
         }
     }

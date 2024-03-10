@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.util.List;
 
 @Getter
-@ToString
+@ToString(exclude = "id")
 @AllArgsConstructor
 @Document(indexName = "blog")
 public class Article {
@@ -22,4 +22,7 @@ public class Article {
 
     @Field(type = FieldType.Nested, includeInParent = true)
     private List<Author> authors;
+
+    @Field(type = FieldType.Keyword)
+    private String[] tags;
 }

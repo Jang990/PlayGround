@@ -18,6 +18,7 @@ public interface ArticleRepository extends ElasticsearchRepository<Article, Stri
             ]
         }
     }*/
+    // Article(title=..., authors=[..., Author(name=John), ...], tags=[...]) 이런 조건은 모두 부합
     @Query("{\"bool\": {\"must\": [{\"match\": {\"authors.name\": \"?0\"}}]}}")
     Page<Article> findByAuthorsNameUsingCustomQuery(String name, Pageable pageable);
 
@@ -31,6 +32,7 @@ public interface ArticleRepository extends ElasticsearchRepository<Article, Stri
             }
         }
     }*/
+    // match_all - 모든 문서 대상. & 그 중에 tags에 정확히 일치
     @Query("{\"bool\": {\"must\": {\"match_all\": {}}, \"filter\": {\"term\": {\"tags\": \"?0\" }}}}")
     Page<Article> findByFilteredTagQuery(String tag, Pageable pageable);
 
