@@ -169,54 +169,6 @@ services:
       timeout: 10s
       retries: 120
 
-  metricbeat01:
-    depends_on:
-      es01:
-        condition: service_healthy # es01 서비스가 성공적으로 실행된 후에 시작
-      kibana:
-        condition: service_healthy # kibana 서비스가 성공적으로 실행된 후에 시작
-    image: docker.elastic.co/beats/metricbeat:${STACK_VERSION} # Metricbeat 이미지를 사용하여 컨테이너 생성
-    user: root # root 사용자로 실행
-    # 파일의 권한 변경 - 원글 설정과 다름
-    entrypoint: >
-      sh -c "
-      chmod go-w /usr/share/metricbeat/metricbeat.yml &&
-      metricbeat -e"
-    volumes:
-      - certs:/usr/share/metricbeat/certs # 인증서 디렉토리를 컨테이너에 마운트
-      - metricbeatdata01:/usr/share/metricbeat/data # 데이터 디렉토리를 컨테이너에 마운트
-      - "./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml" # Metricbeat 설정 파일을 컨테이너에 마운트 - 원글 설정과 다름: 읽기 전용 오류로 ro 옵션 제거함
-      - "/var/run/docker.sock:/var/run/docker.sock:ro" # Docker 소켓을 컨테이너에 마운트 (읽기 전용)
-      - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro" # cgroup 디렉토리를 컨테이너에 마운트 (읽기 전용)
-      - "/proc:/hostfs/proc:ro" # proc 디렉토리를 컨테이너에 마운트 (읽기 전용)
-      - "/:/hostfs:ro" # 호스트 파일 시스템을 컨테이너에 마운트 (읽기 전용)
-    environment: # 환경 변수 설정
-      - ELASTIC_USER=elastic # Elasticsearch 사용자 이름 설정
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD} # Elasticsearch 비밀번호 설정
-      - ELASTIC_HOSTS=https://es01:9200 # Elasticsearch 호스트 설정
-      - KIBANA_HOSTS=http://kibana:5601 # Kibana 호스트 설정
-      - LOGSTASH_HOSTS=http://logstash01:9600 # Logstash 호스트 설정
-
-  filebeat01:
-    depends_on:
-      es01:
-        condition: service_healthy
-    image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
-    user: root
-    volumes:
-      - certs:/usr/share/filebeat/certs
-      - filebeatdata01:/usr/share/filebeat/data
-      - "./filebeat_ingest_data/:/usr/share/filebeat/ingest_data/"
-      - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
-      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    environment:
-      - ELASTIC_USER=elastic
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-      - ELASTIC_HOSTS=https://es01:9200
-      - KIBANA_HOSTS=http://kibana:5601
-      - LOGSTASH_HOSTS=http://logstash01:9600
-
   logstash01:
     depends_on:
       es01:
