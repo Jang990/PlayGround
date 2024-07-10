@@ -1,4 +1,12 @@
 spring:
+  data:
+    #### 엘라스틱 서치 ####
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: localhost:9200
+      repositories:
+        enabled: true
+    #####################
   output:
     ansi:
       enabled: always
@@ -18,4 +26,3 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-        default_batch_fetch_size: 100
