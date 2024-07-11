@@ -1,12 +1,10 @@
+elastic:
+  search:
+    uri: localhost:9200
+    username: elastic
+    password: changeme
+
 spring:
-  data:
-    #### 엘라스틱 서치 ####
-    elasticsearch:
-      cluster-name: elasticsearch
-      cluster-nodes: localhost:9200
-      repositories:
-        enabled: true
-    #####################
   output:
     ansi:
       enabled: always
