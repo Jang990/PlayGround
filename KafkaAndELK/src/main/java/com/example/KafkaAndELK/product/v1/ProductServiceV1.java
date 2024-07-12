@@ -1,9 +1,17 @@
 package com.example.KafkaAndELK.product.v1;
 
 import com.example.KafkaAndELK.product.*;
+import com.example.KafkaAndELK.product.helper.Indices;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.document.Document;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 /**
  * V1. 애플리케이션 레벨에서 직접 ElasticSearch 색인 관리
@@ -16,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductServiceV1 {
     private final ProductRepository repository;
     private final ProductSearchRepository searchRepository;
+    private final ElasticsearchTemplate elasticsearchTemplate;
 
     public Product save(ProductRequest product) {
         Product result = new Product(product.getPrice(), product.getStock(), product.getName());
@@ -27,7 +36,10 @@ public class ProductServiceV1 {
         Product product = repository.findById(productId).orElseThrow(RuntimeException::new);
         product.buy();
 
-        update(productId, product);
+        UpdateQuery updateQuery = UpdateQuery.builder(Long.toString(productId))
+                .withDocument(Document.from(Map.of("stock", product.getStock())))
+                .build();
+        elasticsearchTemplate.update(updateQuery, IndexCoordinates.of(Indices.PRODUCT_INDEX));
         return product.getStock();
     }
 
@@ -39,10 +51,5 @@ public class ProductServiceV1 {
     private void save(Product result) {
         repository.save(result);
         searchRepository.save(new ProductInfo(result));
-    }
-
-    private void update(long productId, Product product) {
-        searchRepository.deleteById(productId);
-        searchRepository.save(new ProductInfo(product));
     }
 }

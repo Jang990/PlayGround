@@ -36,7 +36,7 @@ public class ProductSearchControllerV1 {
     public ResponseEntity<ProductInfo> findAllProduct(@PathVariable(name = "id") long productId) {
         return ResponseEntity.ok(
                 repository.findById(productId)
-                        .orElseThrow(IllegalArgumentException::new)
+                        .orElse(null)
         );
     }
 }
