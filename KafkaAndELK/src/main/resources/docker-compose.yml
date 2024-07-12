@@ -42,3 +42,27 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    environment:
+      - xpack.monitoring.elasticsearch.hosts=http://es01:9200
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_DB=${MYSQL_DB}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - JDBC_DRIVER_URL=${JDBC_DRIVER_URL}
+      - JDBC_DRIVER_PATH=${JDBC_DRIVER_PATH}
+    depends_on:
+      - es01
+    entrypoint: [ "/bin/sh", "-c" ]
+    command: >
+      "if [ ! -f ${JDBC_DRIVER_PATH} ]; then
+         curl -o ${JDBC_DRIVER_PATH} ${JDBC_DRIVER_URL};
+       fi &&
+       /usr/local/bin/docker-entrypoint"
+    ports:
+      - "5044:5044" # Logstash input port (optional)
