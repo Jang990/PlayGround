@@ -28,20 +28,6 @@ services:
       - xpack.security.http.ssl.enabled=false # HTTP SSL 비활성화
       - xpack.security.transport.ssl.enabled=false # Transport SSL 비활성화
       - xpack.license.self_generated.type=${LICENSE} # 라이선스 유형 설정
-    mem_limit: ${ES_MEM_LIMIT} # 메모리 제한 설정
-    ulimits: # ulimit 설정
-      memlock: # 메모리 락은 무제한으로 설정
-        soft: -1
-        hard: -1
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "curl -s http://localhost:9200 | grep -q 'missing authentication credentials'",
-        ]
-      interval: 10s
-      timeout: 10s
-      retries: 120
 
   logstash:
     image: docker.elastic.co/logstash/logstash:${STACK_VERSION}

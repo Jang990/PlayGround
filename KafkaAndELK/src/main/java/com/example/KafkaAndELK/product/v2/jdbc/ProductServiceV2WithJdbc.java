@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * V2-JDBC. 애플리케이션 레벨에서 직접 ElasticSearch 색인 관리
- * 장점: 단순
- * 단점: 실시간 동기화가 안됨. logstash의 스케줄에 따르게 됨.
+ * V2-JDBC.
+ * 장점: 단순. 스케줄링에 따른 DB와의 동기화.
+ * 단점: 스케줄링을 통해서 주기적으로 DB에 부하를 줌 - 데이터가 많아진 경우 부하도 커짐
  *      마지막 스케줄링 시간 이후의 update_at 필드값으로 가져오기 때문에
  *      제거는 따로 처리가 필요하거나 isDeleted 필드 추가가 필요함.
  */
