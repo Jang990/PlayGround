@@ -1,7 +1,7 @@
 package com.example.KafkaAndELK.product.v2.jdbc;
 
-import com.example.KafkaAndELK.product.Product;
 import com.example.KafkaAndELK.product.ProductRequest;
+import com.example.KafkaAndELK.product.v2.entity.ProductV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class ProductControllerV2WithJdbc {
     private final ProductServiceV2WithJdbc productService;
 
     @PostMapping("/product")
-    public ResponseEntity<Product> save(@RequestBody ProductRequest product) {
+    public ResponseEntity<ProductV2> save(@RequestBody ProductRequest product) {
         return new ResponseEntity<>(productService.save(product), HttpStatus.CREATED);
     }
 

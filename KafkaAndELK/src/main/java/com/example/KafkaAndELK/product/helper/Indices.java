@@ -5,5 +5,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Indices {
-    public static final String PRODUCT_INDEX = "product";
+    public static final String PRODUCT_V1_INDEX = "product_v1";
+    public static final String PRODUCT_V2_INDEX = "product_v2";
 }

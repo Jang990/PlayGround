@@ -1,6 +1,9 @@
 package com.example.KafkaAndELK.product.v2.jdbc;
 
 import com.example.KafkaAndELK.product.*;
+import com.example.KafkaAndELK.product.v2.ProductSearchV2Repository;
+import com.example.KafkaAndELK.product.v2.ProductV2Repository;
+import com.example.KafkaAndELK.product.v2.entity.ProductV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,18 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class ProductServiceV2WithJdbc {
-    private final ProductRepository repository;
-    private final ProductSearchRepository searchRepository;
+    private final ProductV2Repository repository;
+    private final ProductSearchV2Repository searchRepository;
 
-    public Product save(ProductRequest product) {
-        Product result = new Product(product.getPrice(), product.getStock(), product.getName());
+    public ProductV2 save(ProductRequest product) {
+        ProductV2 result = new ProductV2(product.getPrice(), product.getStock(), product.getName());
         repository.save(result);
 //        searchRepository.save(new ProductInfo(result)); // 이제 필요없어짐.
         return result;
     }
 
     public int purchase(long productId) {
-        Product product = repository.findById(productId).orElseThrow(RuntimeException::new);
+        ProductV2 product = repository.findById(productId).orElseThrow(RuntimeException::new);
         product.buy();
 
         // 업데이트에 대한 처리가 필요없어짐

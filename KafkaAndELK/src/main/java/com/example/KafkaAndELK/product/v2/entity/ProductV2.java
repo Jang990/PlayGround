@@ -1,18 +1,17 @@
-package com.example.KafkaAndELK.product;
+package com.example.KafkaAndELK.product.v2.entity;
 
+import com.example.KafkaAndELK.product.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @NoArgsConstructor
-public class Product extends BaseTimeEntity {
+public class ProductV2 extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -20,7 +19,7 @@ public class Product extends BaseTimeEntity {
     private int stock;
     private String name;
 
-    public Product(int price, int stock, String name) {
+    public ProductV2(int price, int stock, String name) {
         this.price = price;
         this.stock = stock;
         this.name = name;

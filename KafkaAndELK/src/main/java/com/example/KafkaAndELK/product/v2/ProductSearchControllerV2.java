@@ -1,7 +1,6 @@
 package com.example.KafkaAndELK.product.v2;
 
-import com.example.KafkaAndELK.product.ProductInfo;
-import com.example.KafkaAndELK.product.ProductSearchRepository;
+import com.example.KafkaAndELK.product.v2.entity.ProductInfoV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,12 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/v2")
 public class ProductSearchControllerV2 {
-    private final ProductSearchRepository repository;
+    private final ProductSearchV2Repository repository;
     private final Pageable pageable = PageRequest.of(0, 100);
 
     @GetMapping("/product")
-    public ResponseEntity<List<ProductInfo>> findAllProduct(String name) {
-        Page<ProductInfo> list;
+    public ResponseEntity<List<ProductInfoV2>> findAllProduct(String name) {
+        Page<ProductInfoV2> list;
         if(name == null || name.isEmpty())
             list = repository.findAll(pageable);
         else
@@ -32,7 +31,7 @@ public class ProductSearchControllerV2 {
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<ProductInfo> findAllProduct(@PathVariable(name = "id") long productId) {
+    public ResponseEntity<ProductInfoV2> findAllProduct(@PathVariable(name = "id") long productId) {
         return ResponseEntity.ok(
                 repository.findById(productId)
                         .orElse(null)

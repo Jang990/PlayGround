@@ -1,15 +1,14 @@
-package com.example.KafkaAndELK.product;
+package com.example.KafkaAndELK.product.v2;
 
+import com.example.KafkaAndELK.product.v2.entity.ProductInfoV2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface ProductSearchRepository extends ElasticsearchRepository<ProductInfo, Long> {
+public interface ProductSearchV2Repository extends ElasticsearchRepository<ProductInfoV2, Long> {
     /*{
         "bool": {
             "must": [
@@ -18,5 +17,5 @@ public interface ProductSearchRepository extends ElasticsearchRepository<Product
         }
     }*/
     @Query("{\"bool\": {\"must\": [{\"match\": {\"name\": \"?0\"}}]}}")
-    Page<ProductInfo> findProducts(String name, Pageable pageable);
+    Page<ProductInfoV2> findProducts(String name, Pageable pageable);
 }

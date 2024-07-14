@@ -1,13 +1,10 @@
 package com.example.KafkaAndELK.product.v1;
 
-import com.example.KafkaAndELK.product.Product;
-import com.example.KafkaAndELK.product.ProductRepository;
 import com.example.KafkaAndELK.product.ProductRequest;
-import com.example.KafkaAndELK.product.ProductSearchRepository;
+import com.example.KafkaAndELK.product.v1.entity.ProductV1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +19,7 @@ public class ProductControllerV1 {
     private final ProductServiceV1 productService;
 
     @PostMapping("/product")
-    public ResponseEntity<Product> save(@RequestBody ProductRequest product) {
+    public ResponseEntity<ProductV1> save(@RequestBody ProductRequest product) {
         return new ResponseEntity<>(productService.save(product), HttpStatus.CREATED);
     }
 
