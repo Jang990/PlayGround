@@ -1,0 +1,2 @@
+# event.cancel 로그 확인용
+log.level: debug
