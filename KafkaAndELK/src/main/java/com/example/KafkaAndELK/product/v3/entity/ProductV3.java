@@ -1,12 +1,11 @@
 package com.example.KafkaAndELK.product.v3.entity;
 
 import com.example.KafkaAndELK.product.BaseTimeEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -18,6 +17,9 @@ public class ProductV3 extends BaseTimeEntity {
     private int price;
     private int stock;
     private String name;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductTagV3> productTagList;
 
     public ProductV3(int price, int stock, String name) {
         this.price = price;

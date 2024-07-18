@@ -22,7 +22,6 @@ public class ProductSearchControllerV3 {
 
     @GetMapping("/product")
     public ResponseEntity<List<ProductInfoV3>> findAllProduct(String name) {
-        System.out.println(name);
         Page<ProductInfoV3> list;
         if(name == null || name.isEmpty())
             list = repository.findAll(pageable);
