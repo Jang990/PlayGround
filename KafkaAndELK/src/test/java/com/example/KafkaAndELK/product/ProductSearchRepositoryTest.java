@@ -6,15 +6,12 @@ import com.example.KafkaAndELK.product.v3.ProductSearchV3Repository;
 import com.example.KafkaAndELK.product.v3.document.ProductInfoV3;
 import com.example.KafkaAndELK.product.v3.document.TagInfoV3;
 import com.example.KafkaAndELK.product.v3.entity.ProductV3;
-import com.example.KafkaAndELK.product.v3.entity.TagV3;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ProductSearchRepositoryTest {
@@ -60,6 +57,24 @@ class ProductSearchRepositoryTest {
         List<TagInfoV3> list = List.of(new TagInfoV3(1L, "캔디류 aa"), new TagInfoV3(2L, "하리보"));
         ProductInfoV3 productInfo = new ProductInfoV3(jelly, list);
         searchRepositoryV3.save(productInfo);
+    }
+
+    @Test
+    void v3SearchTest() {
+        String productName = "하리보";
+        String tagName = "캔디류";
+
+        query("findWithName", searchRepositoryV3.findWithName(productName));
+        query("findWithTagName", searchRepositoryV3.findWithTagName(tagName));
+        query("findWithNameAndTagName", searchRepositoryV3.findWithNameAndTagName(productName, tagName));
+    }
+
+    private void query(String title, List<ProductInfoV3> searchRepositoryV3) {
+        System.out.println(title);
+        for (ProductInfoV3 productInfoV3 : searchRepositoryV3) {
+            System.out.println(productInfoV3);
+        }
+        System.out.println();
     }
 
 }

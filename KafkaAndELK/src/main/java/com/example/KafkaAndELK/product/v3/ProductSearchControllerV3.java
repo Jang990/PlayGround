@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +22,21 @@ public class ProductSearchControllerV3 {
     private final Pageable pageable = PageRequest.of(0, 100);
 
     @GetMapping("/product")
-    public ResponseEntity<List<ProductInfoV3>> findAllProduct(String name) {
-        Page<ProductInfoV3> list;
-        if(name == null || name.isEmpty())
-            list = repository.findAll(pageable);
+    public ResponseEntity<List<ProductInfoV3>> findAllProduct(String name, String tagName) {
+        List<ProductInfoV3> list;
+        boolean hasProductName = StringUtils.hasText(name);
+        boolean hasTagName = StringUtils.hasText(tagName);
+
+        if(hasProductName && hasTagName)
+            list = repository.findWithNameAndTagName(name, tagName);
+        else if(hasProductName)
+            list = repository.findWithName(name);
+        else if(hasTagName)
+            list = repository.findWithTagName(tagName);
         else
-            list = repository.findProducts(name, pageable);
-        return ResponseEntity.ok(list.getContent());
+            list = repository.findAll(pageable).getContent();
+
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/product/{id}")
