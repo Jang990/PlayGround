@@ -20,7 +20,7 @@ public class SeoulRule369 implements Rule369{
         String s = String.valueOf(num);
         for (int i = 0; i < s.length(); i++) {
             int current = s.charAt(i) - '0';
-            if(is369(num))
+            if(is369(current))
                 return true;
         }
         return false;
