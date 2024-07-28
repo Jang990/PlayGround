@@ -28,7 +28,7 @@ public class Player {
         String s = String.valueOf(num);
         for (int i = 0; i < s.length(); i++) {
             int current = s.charAt(i) - '0';
-            if(current % 3 == 0)
+            if(is369(current))
                 return true;
         }
         return false;
@@ -40,5 +40,9 @@ public class Player {
 
     private void log(String result) {
         System.out.println(name + " : " + result);
+    }
+
+    private boolean is369(int num) {
+        return num != 0 && num % 3 == 0;
     }
 }
