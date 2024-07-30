@@ -37,9 +37,9 @@ public class ConcurrencyIssueHelper {
         return new Thread(runnable);
     }
 
-    private static void sleep(long time) {
+    public static void sleep(long time) {
         try {
-            Thread.sleep((long) (Math.random() * time));
+            Thread.sleep((long) (time));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
