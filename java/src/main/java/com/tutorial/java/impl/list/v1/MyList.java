@@ -16,18 +16,15 @@ public class MyList<T> {
     public void add(int idx, T instance) {
         MyNode<T> node = new MyNode<>(instance);
         if (size == 0) {
-            size++;
             addFirst(node);
             return;
         }
 
         if (size == idx) {
-            size++;
             addLast(node);
             return;
         }
 
-        size++;
         addMiddle(node, idx);
     }
 
@@ -43,7 +40,52 @@ public class MyList<T> {
         return searchNode(val) != null;
     }
 
+    public boolean remove(T val) {
+        MyNode<T> target = searchNode(val);
+        if(target == null)
+            return false;
+
+        if (target == start) {
+            removeStartNode();
+            return true;
+        }
+
+        if (target == last) {
+            removeLastNode();
+            return true;
+        }
+
+        size--;
+        connect(target.prev, target.next);
+        target.next = null;
+        target.prev = null;
+        return true;
+    }
+
+    private void removeLastNode() {
+        size--;
+        MyNode<T> newLast = last.prev;
+        newLast.next = null;
+        if(last == start)
+            start = newLast;
+        last = newLast;
+    }
+
+    private void removeStartNode() {
+        size--;
+        if (size == 0) {
+            start = null;
+            last = null;
+            return;
+        }
+
+        MyNode<T> newStart = start.next;
+        start = newStart;
+        newStart.prev = null;
+    }
+
     private void addMiddle(MyNode<T> node, int idx) {
+        size++;
         MyNode<T> target = searchNode(idx);
         MyNode<T> targetPrev = target.prev;
 
@@ -77,6 +119,7 @@ public class MyList<T> {
     }
 
     private void addLast(MyNode<T> node) {
+        size++;
         connect(last, node);
         last = node;
     }
@@ -87,6 +130,7 @@ public class MyList<T> {
     }
 
     private void addFirst(MyNode<T> node) {
+        size++;
         start = node;
         last = node;
     }

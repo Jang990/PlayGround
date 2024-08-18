@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MyListTest {
 
@@ -67,6 +66,48 @@ class MyListTest {
     void containsFalse() {
         Integer excludesNum = Integer.MIN_VALUE;
         boolean result = list.contains(excludesNum);
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void removeFirstNum() {
+        Integer includedNum = INSTANCE[0];
+
+        boolean result = list.remove(includedNum);
+
+        assertThat(list.size()).isEqualTo(INSTANCE.length - 1);
+        assertThat(list.contains(includedNum)).isFalse();
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void removeMiddleNum() {
+        Integer includedNum = INSTANCE[1];
+
+        boolean result = list.remove(includedNum);
+
+        assertThat(list.size()).isEqualTo(INSTANCE.length - 1);
+        assertThat(list.contains(includedNum)).isFalse();
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void removeLastNum() {
+        Integer includedNum = INSTANCE[2];
+
+        boolean result = list.remove(includedNum);
+
+        assertThat(list.size()).isEqualTo(INSTANCE.length - 1);
+        assertThat(list.contains(includedNum)).isFalse();
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void removeExcludedNum() {
+        Integer excludedNum = Integer.MIN_VALUE;
+        boolean result = list.remove(excludedNum);
+
+        assertThat(list.size()).isEqualTo(INSTANCE.length);
         assertThat(result).isFalse();
     }
 

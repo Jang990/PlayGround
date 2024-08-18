@@ -15,7 +15,7 @@ public class LinkedListTest {
 
     @BeforeEach
     void beforeEach() {
-        list = new LinkedList<Integer>();
+        list = new LinkedList<>();
         list.add(INSTANCE[0]);
         list.add(INSTANCE[1]);
         list.add(INSTANCE[2]);
@@ -69,6 +69,25 @@ public class LinkedListTest {
     void containsFalse() {
         Integer excludesNum = Integer.MIN_VALUE;
         boolean result = list.contains(excludesNum);
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void removeIncludedNum() {
+        Integer includedNum = INSTANCE[0];
+        boolean result = list.remove(includedNum);
+
+        assertThat(list.size()).isEqualTo(INSTANCE.length - 1);
+        assertThat(list.contains(includedNum)).isFalse();
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void removeExcludedNum() {
+        Integer excludedNum = Integer.MIN_VALUE;
+        boolean result = list.remove(excludedNum);
+
+        assertThat(list.size()).isEqualTo(INSTANCE.length);
         assertThat(result).isFalse();
     }
 
