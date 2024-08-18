@@ -29,7 +29,7 @@ class MyListTest {
 
     @Test
     void testToString() {
-        assertThat(list.toString()).isEqualTo("["+INSTANCE[0]+","+INSTANCE[1]+","+INSTANCE[2]+"]");
+        assertThat(list.toString()).isEqualTo("["+INSTANCE[0]+", "+INSTANCE[1]+", "+INSTANCE[2]+"]");
     }
 
     @Test
@@ -41,7 +41,7 @@ class MyListTest {
     void insert() {
         int insertedNum = -1;
         int insertedIdx = 1;
-        list.add(insertedNum, insertedIdx);
+        list.add(insertedIdx, insertedNum);
 
         for (int i = 0; i < list.size(); i++) {
             if (insertedIdx == i) {

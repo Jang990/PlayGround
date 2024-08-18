@@ -10,10 +10,10 @@ public class MyList<T> {
     }
 
     public void add(T instance) {
-        add(instance, size);
+        add(size, instance);
     }
 
-    public void add(T instance, int idx) {
+    public void add(int idx, T instance) {
         MyNode<T> node = new MyNode<>(instance);
         if (size == 0) {
             size++;
@@ -75,13 +75,13 @@ public class MyList<T> {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         while (true) {
-            sb.append(current.instance).append(",");
+            sb.append(current.instance).append(", ");
             if(current.hasNext())
                 current = current.next;
             else
                 break;
         }
-        sb.deleteCharAt(sb.length() - 1);
+        sb.delete(sb.length() - 2, sb.length());
         sb.append("]");
 
         return sb.toString();
