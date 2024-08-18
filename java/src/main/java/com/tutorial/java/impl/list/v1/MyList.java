@@ -44,9 +44,11 @@ public class MyList<T> {
     }
 
     private void addMiddle(MyNode<T> node, int idx) {
-        MyNode<T> prevNode = searchNode(idx - 1);
-        node.link(prevNode.next);
-        prevNode.link(node);
+        MyNode<T> target = searchNode(idx);
+        MyNode<T> targetPrev = target.prev;
+
+        connect(targetPrev, node);
+        connect(node, target);
     }
 
     private MyNode<T> searchNode(int idx) {
@@ -75,8 +77,13 @@ public class MyList<T> {
     }
 
     private void addLast(MyNode<T> node) {
-        last.link(node);
+        connect(last, node);
         last = node;
+    }
+
+    private void connect(MyNode<T> prev, MyNode<T> next) {
+        prev.next(next);
+        next.prev(prev);
     }
 
     private void addFirst(MyNode<T> node) {
@@ -108,13 +115,18 @@ public class MyList<T> {
     static class MyNode<T> {
         private final T instance;
         private MyNode<T> next;
+        private MyNode<T> prev;
 
         public MyNode(T instance) {
             this.instance = instance;
         }
 
-        public void link(MyNode<T> next) {
+        public void next(MyNode<T> next) {
             this.next = next;
+        }
+
+        public void prev(MyNode<T> prev) {
+            this.prev = prev;
         }
 
         public MyNode<T> getNext() {
