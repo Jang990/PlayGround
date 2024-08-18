@@ -61,6 +61,9 @@ public class MyList<T> {
     }
 
     private MyNode<T> searchNode(T val) {
+        if(start == null)
+            return null;
+
         MyNode<T> current = start;
         while (current != null) {
             if(current.instance.equals(val))
