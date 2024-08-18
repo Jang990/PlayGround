@@ -58,6 +58,19 @@ class MyListTest {
     }
 
     @Test
+    void containsTrue() {
+        boolean result = list.contains(INSTANCE[0]);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void containsFalse() {
+        Integer excludesNum = Integer.MIN_VALUE;
+        boolean result = list.contains(excludesNum);
+        assertThat(result).isFalse();
+    }
+
+    @Test
     void stringList() {
         MyList<String> myStringList = new MyList<>();
         for (int i = 0; i < STRING_INSTANCE.length; i++) {

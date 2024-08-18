@@ -39,6 +39,10 @@ public class MyList<T> {
         return size;
     }
 
+    public boolean contains(T val) {
+        return searchNode(val) != null;
+    }
+
     private void addMiddle(MyNode<T> node, int idx) {
         MyNode<T> prevNode = searchNode(idx - 1);
         node.link(prevNode.next);
@@ -54,6 +58,17 @@ public class MyList<T> {
         }
 
         return current;
+    }
+
+    private MyNode<T> searchNode(T val) {
+        MyNode<T> current = start;
+        while (current != null) {
+            if(current.instance.equals(val))
+                return current;
+            current = current.next;
+        }
+
+        return null;
     }
 
     private void addLast(MyNode<T> node) {

@@ -4,11 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LinkedListTest {
-    private LinkedList<Integer> list;
+    private List<Integer> list;
     private final int[] INSTANCE = {236, 10012, 5465};
     final String[] STRING_INSTANCE = {"A", "B", "C"};
 
@@ -56,6 +57,19 @@ public class LinkedListTest {
 
             assertThat(list.get(i)).isEqualTo(INSTANCE[i]);
         }
+    }
+
+    @Test
+    void containsTrue() {
+        boolean result = list.contains(INSTANCE[0]);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void containsFalse() {
+        Integer excludesNum = Integer.MIN_VALUE;
+        boolean result = list.contains(excludesNum);
+        assertThat(result).isFalse();
     }
 
     @Test
