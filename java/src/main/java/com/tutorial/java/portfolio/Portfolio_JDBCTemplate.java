@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import java.util.List;
 public class Portfolio_JDBCTemplate {
     private final JdbcTemplate template;
 
+    @Transactional
     public void saveBulkSomething(List<TestEntity> newClient) {
         final String insertSQL = "INSERT INTO " +
                 "test_entity (something) " +

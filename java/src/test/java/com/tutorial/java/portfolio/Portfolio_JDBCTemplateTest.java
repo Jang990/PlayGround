@@ -15,6 +15,15 @@ class Portfolio_JDBCTemplateTest {
     @Autowired
     Portfolio_JDBCTemplate jdbc;
 
+    @Autowired
+    Portfolio_Jpa jpa;
+
+    private static List<TestEntity> entity() {
+        return IntStream.range(0, 5)
+                .mapToObj((n) -> new TestEntity(n))
+                .toList();
+    }
+
     @Test
     @Transactional
     void test() {
@@ -25,13 +34,22 @@ class Portfolio_JDBCTemplateTest {
         INSERT INTO test_entity (something) VALUES(3);
         INSERT INTO test_entity (something) VALUES(4);
          */
-        List<TestEntity> list = IntStream.range(0, 5)
-                .mapToObj((n) -> new TestEntity(n))
-                .toList();
+        List<TestEntity> list = entity();
+        jdbc.saveBulkSomething(list);
+    }
 
-        jdbc.saveBulkSomething(list);
-        System.out.println(" ===== ");
-        jdbc.saveBulkSomething(list);
+    @Test
+    @Transactional
+    void test2() {
+        List<TestEntity> list = entity();
+        /*
+        Hibernate:
+            insert into test_entity (something) values (?)
+        Hibernate:
+            insert into test_entity (something) values (?)
+        ...
+         */
+        jpa.saveBulkSomething(list);
     }
 
 }
