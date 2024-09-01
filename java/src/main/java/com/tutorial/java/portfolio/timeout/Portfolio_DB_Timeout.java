@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 public class Portfolio_DB_Timeout {
-    private final TestRepository repository;
 
     @Transactional
     public void sleep40() {

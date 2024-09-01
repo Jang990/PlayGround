@@ -1,5 +1,6 @@
-package com.tutorial.java.portfolio;
+package com.tutorial.java.portfolio.batch;
 
+import com.tutorial.java.portfolio.batch.entity.IdentityEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,7 +17,7 @@ public class Portfolio_JDBCTemplate {
     private final JdbcTemplate template;
 
     @Transactional
-    public void saveBulkSomething(List<TestEntity> newClient) {
+    public void saveBulkSomething(List<IdentityEntity> newClient) {
         final String insertSQL = "INSERT INTO " +
                 "test_entity (something) " +
                 "VALUES(?)";
@@ -24,7 +25,7 @@ public class Portfolio_JDBCTemplate {
         template.batchUpdate(insertSQL, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                TestEntity client = newClient.get(i);
+                IdentityEntity client = newClient.get(i);
                 ps.setInt(1, client.getSomething());
             }
 

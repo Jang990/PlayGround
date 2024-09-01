@@ -1,5 +1,6 @@
-package com.tutorial.java.portfolio;
+package com.tutorial.java.portfolio.batch;
 
+import com.tutorial.java.portfolio.batch.entity.IdentityEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class Portfolio_JDBCTemplateTest {
@@ -18,9 +17,9 @@ class Portfolio_JDBCTemplateTest {
     @Autowired
     Portfolio_Jpa jpa;
 
-    private static List<TestEntity> entity() {
+    private static List<IdentityEntity> entity() {
         return IntStream.range(0, 5)
-                .mapToObj((n) -> new TestEntity(n))
+                .mapToObj((n) -> new IdentityEntity(n))
                 .toList();
     }
 
@@ -34,14 +33,14 @@ class Portfolio_JDBCTemplateTest {
         INSERT INTO test_entity (something) VALUES(3);
         INSERT INTO test_entity (something) VALUES(4);
          */
-        List<TestEntity> list = entity();
+        List<IdentityEntity> list = entity();
         jdbc.saveBulkSomething(list);
     }
 
     @Test
     @Transactional
     void test2() {
-        List<TestEntity> list = entity();
+        List<IdentityEntity> list = entity();
         /*
         Hibernate:
             insert into test_entity (something) values (?)

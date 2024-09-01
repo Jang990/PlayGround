@@ -1,4 +1,4 @@
-package com.tutorial.java.portfolio;
+package com.tutorial.java.portfolio.batch.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,14 +8,14 @@ import lombok.Data;
 
 @Entity
 @Data
-public class TestEntity {
+public class IdentityEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private int something;
 
-    public TestEntity(int something) {
+    public IdentityEntity(int something) {
         this.something = something;
     }
 }
