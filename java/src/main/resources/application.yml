@@ -5,6 +5,11 @@ spring:
         hikari:
             username: root
             password: 1234
+#    datasource:
+#        url: jdbc:postgresql://localhost:5432/gajamap?useSSL=false&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+#        username: postgres
+#        password: abc
+#        driver-class-name: org.postgresql.Driver
     jpa:
         open-in-view: false
         hibernate:
@@ -13,10 +18,17 @@ spring:
         properties:
             hibernate:
                 format_sql: true
+                use_sql_comments: true
 
 logging:
     level:
         org:
+            hibernate:
+                type: TRACE
+                stat: debug
+                orm:
+                    jdbc:
+                        bind: trace
             springframework:
                 jdbc:
                     core:
