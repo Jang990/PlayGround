@@ -29,27 +29,27 @@ services:
       - xpack.security.transport.ssl.enabled=false # Transport SSL 비활성화
       - xpack.license.self_generated.type=${LICENSE} # 라이선스 유형 설정
 
-  logstash:
-    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
-    volumes:
-      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-#      - ./logstash.yml:/usr/share/logstash/config/logstash.yml # event.cancel 로그 확인용
-    environment:
-      - xpack.monitoring.elasticsearch.hosts=http://es01:9200
-      - MYSQL_HOST=${MYSQL_HOST}
-      - MYSQL_PORT=${MYSQL_PORT}
-      - MYSQL_DB=${MYSQL_DB}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - JDBC_DRIVER_URL=${JDBC_DRIVER_URL}
-      - JDBC_DRIVER_PATH=${JDBC_DRIVER_PATH}
-    depends_on:
-      - es01
-    entrypoint: [ "/bin/sh", "-c" ]
-    command: >
-      "if [ ! -f ${JDBC_DRIVER_PATH} ]; then
-         curl -o ${JDBC_DRIVER_PATH} ${JDBC_DRIVER_URL};
-       fi &&
-       /usr/local/bin/docker-entrypoint"
-    ports:
-      - "5044:5044" # Logstash input port (optional)
+#  logstash:
+#    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
+#    volumes:
+#      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+##      - ./logstash.yml:/usr/share/logstash/config/logstash.yml # event.cancel 로그 확인용
+#    environment:
+#      - xpack.monitoring.elasticsearch.hosts=http://es01:9200
+#      - MYSQL_HOST=${MYSQL_HOST}
+#      - MYSQL_PORT=${MYSQL_PORT}
+#      - MYSQL_DB=${MYSQL_DB}
+#      - MYSQL_USER=${MYSQL_USER}
+#      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+#      - JDBC_DRIVER_URL=${JDBC_DRIVER_URL}
+#      - JDBC_DRIVER_PATH=${JDBC_DRIVER_PATH}
+#    depends_on:
+#      - es01
+#    entrypoint: [ "/bin/sh", "-c" ]
+#    command: >
+#      "if [ ! -f ${JDBC_DRIVER_PATH} ]; then
+#         curl -o ${JDBC_DRIVER_PATH} ${JDBC_DRIVER_URL};
+#       fi &&
+#       /usr/local/bin/docker-entrypoint"
+#    ports:
+#      - "5044:5044" # Logstash input port (optional)
