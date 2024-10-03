@@ -1,0 +1,87 @@
+version: "3.8"
+
+volumes:
+  esdata01:
+    driver: local
+  esdata02:
+    driver: local
+  esdata03:
+    driver: local
+
+networks:
+  default:
+    name: elastic
+    external: false
+
+services:
+  es01: # 마스터 노드
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION} # Elasticsearch 이미지 사용
+    labels:
+      co.elastic.logs/module: elasticsearch # 로그 모듈로 elasticsearch 사용
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data # 데이터 디렉토리를 컨테이너에 마운트
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    environment: # 환경 변수 설정
+      - node.name=es01 # 노드 이름 설정
+      - node.roles= [ master, data ]
+      - cluster.name=${CLUSTER_NAME} # 클러스터 이름 설정
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD} # Elastic 사용자 비밀번호 설정
+      - cluster.initial_master_nodes=es01 # Master 노드(실질적 master +  master 후보들) 지정.
+      - discovery.seed_hosts=es01 # 전체적인 정보를 받아올 노드
+      - bootstrap.memory_lock=true # 메모리 잠금 설정
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false # X-Pack 보안 활성화
+      - xpack.security.http.ssl.enabled=false # HTTP SSL 비활성화
+      - xpack.security.transport.ssl.enabled=false # Transport SSL 비활성화
+      - xpack.license.self_generated.type=${LICENSE} # 라이선스 유형 설정
+  es02: # 코디네이트 전용
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION} # Elasticsearch 이미지 사용
+    labels:
+      co.elastic.logs/module: elasticsearch # 로그 모듈로 elasticsearch 사용
+    volumes:
+      - esdata02:/usr/share/elasticsearch/data # 데이터 디렉토리를 컨테이너에 마운트
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - ${ES_PORT}:9200
+    environment: # 환경 변수 설정
+      - node.name=es02 # 노드 이름 설정
+      - node.roles= [ ]
+      - cluster.name=${CLUSTER_NAME} # 클러스터 이름 설정
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD} # Elastic 사용자 비밀번호 설정
+      - cluster.initial_master_nodes=es01 # Master 노드(실질적 master +  master 후보들) 지정.
+      - discovery.seed_hosts=es01 # 전체적인 정보를 받아올 노드
+      - bootstrap.memory_lock=true # 메모리 잠금 설정
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false # X-Pack 보안 활성화
+      - xpack.security.http.ssl.enabled=false # HTTP SSL 비활성화
+      - xpack.security.transport.ssl.enabled=false # Transport SSL 비활성화
+      - xpack.license.self_generated.type=${LICENSE} # 라이선스 유형 설정
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION} # Elasticsearch 이미지 사용
+    labels:
+      co.elastic.logs/module: elasticsearch # 로그 모듈로 elasticsearch 사용
+    volumes:
+      - esdata03:/usr/share/elasticsearch/data # 데이터 디렉토리를 컨테이너에 마운트
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    environment: # 환경 변수 설정
+      - node.name=es03 # 노드 이름 설정
+      - node.roles= [ data ]
+      - cluster.name=${CLUSTER_NAME} # 클러스터 이름 설정
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD} # Elastic 사용자 비밀번호 설정
+      - cluster.initial_master_nodes=es01 # Master 노드(실질적 master +  master 후보들) 지정.
+      - discovery.seed_hosts=es01 # 전체적인 정보를 받아올 노드
+      - bootstrap.memory_lock=true # 메모리 잠금 설정
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false # X-Pack 보안 활성화
+      - xpack.security.http.ssl.enabled=false # HTTP SSL 비활성화
+      - xpack.security.transport.ssl.enabled=false # Transport SSL 비활성화
+      - xpack.license.self_generated.type=${LICENSE} # 라이선스 유형 설정
