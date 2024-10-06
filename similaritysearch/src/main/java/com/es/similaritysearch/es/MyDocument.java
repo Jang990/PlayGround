@@ -8,6 +8,9 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @Document(indexName = "my_document")
 @Data
 @NoArgsConstructor
@@ -18,6 +21,6 @@ public class MyDocument {
 
     private String content;
 
-    @Field(type = FieldType.Dense_Vector, dims = 1536)
-    private float[] embeddingVector;
+    @Field(type = FieldType.Dense_Vector, dims = 1536, index = true, similarity = "dot_product")
+    private List<Float> embeddingVector = new LinkedList<>();
 }

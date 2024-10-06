@@ -3,6 +3,8 @@ package com.es.similaritysearch.es;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 
 import java.util.List;
 
@@ -11,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class MyServiceTest {
     @Autowired MyService myService;
+    @Autowired MyDocumentRepository repository;
 
     List<String> questions = List.of(
             "Spring의 특징이 뭔가요?",
@@ -25,4 +28,23 @@ class MyServiceTest {
             myService.save(i, questions.get(i));
         }
     }
+
+    @Test
+    void test2() {
+        List<MyDocument> myDocuments = myService.searchSimilarityContent("DI와 IoC입니다.");
+        System.out.println(myDocuments);
+    }
+
+    @Test
+    void test3() {
+        List<MyDocument> myDocuments = myService.searchSimilarityContent("잘 모르겠습니다.");
+        System.out.println(myDocuments);
+    }
+
+//    @Test
+//    void test4() {
+//        List<MyDocument> result = myService.service("DI와 IoC입니다.");
+//        System.out.println(result);
+//    }
+
 }
